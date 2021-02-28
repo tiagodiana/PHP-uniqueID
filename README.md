@@ -11,7 +11,7 @@ Add file UniqueID.php in your project
 ...
 ```php
 <?php
-require UniqueID;
+require UniqueID.php;
 $unique = new UniqueID();
 $id = $unique->uniqueId();
 echo $id;
