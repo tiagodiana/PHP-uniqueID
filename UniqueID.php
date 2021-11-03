@@ -14,29 +14,64 @@ class UniqueID
         $this->numbers = str_split('123456789');
     }
 
+    /**
+     * GERANDO UNIQUE NECESSÁRIO PARA GERAR O TOKEN (UNIQUE)
+     * @return string
+    */
     private function generateUnique()
+    {
+        $unique = '';
+        for ($c = 0 ; $c < 4; $c++)
+        {
+            if ($c % 2 == 0)
+            {
+                $unique .= $this->letters[(time() * rand(0, 4)) % 48];
+            }
+            else
+            {
+                $unique .= $this->generateBin();
+            }
+        }
+        return $unique;
+    }
+
+    /**
+     * GERANDO UNIQUE ID COM 16 CARACTERES
+     * @param $separate string
+     * @return string;
+     * */
+    private function generateUnique16($separate)
     {
         $unique_array = [];
         for ($d = 0; $d < 4; $d++)
         {
-            $unique = '';
-            for ($c = 0 ; $c < 4; $c++)
-            {
-                if ($c % 2 == 0)
-                {
-                    $unique .= $this->letters[(time() * rand(0, 4)) % 48];
-                }
-                else
-                {
-                    $unique .= $this->generateBin();
-                }
-            }
+            $unique = $this->generateUnique();
             array_push($unique_array, $unique);
         }
 
-        return implode('-', $unique_array);
+        return implode($separate, $unique_array);
     }
 
+    /**
+     * GERANDO UNIQUE ID COM 32 CARACTERES
+     * @param $separate string
+     * @return string;
+     * */
+    private function generateUnique32($separate)
+    {
+        $unique_array = [];
+        for ($d = 0; $d < 8; $d++)
+        {
+            $unique = $this->generateUnique();
+            array_push($unique_array, $unique);
+        }
+
+        return implode($separate, $unique_array);
+    }
+
+    /**
+     * GERANDO UM VALOR ALEÁTORIO APARTIR DE BINÁRIO
+    */
     private function generateBin()
     {
         $key = '';
@@ -61,8 +96,24 @@ class UniqueID
             return bindec($key);
     }
 
-    public function uniqueId()
+    /**
+     * GERANDO UNIQUE ID COM 16 CARACTERES
+     * @param $separate string
+     * @return string;
+     * */
+    public function uniqueId16($separate)
     {
-        return $this->generateUnique();
+        return $this->generateUnique16($separate);
+    }
+
+    /**
+     * GERANDO UNIQUE ID COM 32 CARACTERES
+     * @param $separate string
+     * @return string;
+     * */
+    public function uniqueId32($separate)
+    {
+        return $this->generateUnique32($separate);
     }
 }
+
