@@ -1,34 +1,31 @@
 <?php
 
+namespace App\Components;
 
 class UniqueID
 {
-    private $letters;
-    private $numbers;
+    private array $letters;
+    private array $numbers;
 
 
     public function __construct()
     {
         $this->letters = str_split('abcdefghijklmnopqrstuvwxyz'
-            .'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+            . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
         $this->numbers = str_split('123456789');
     }
 
     /**
      * GERANDO UNIQUE NECESSÁRIO PARA GERAR O TOKEN (UNIQUE)
      * @return string
-    */
-    private function generateUniqueAlphaNumeric()
+     */
+    private function generateUniqueAlphaNumeric(): string
     {
         $unique = '';
-        for ($c = 0 ; $c < 4; $c++)
-        {
-            if ($c % 2 == 0)
-            {
+        for ($c = 0; $c < 4; $c++) {
+            if ($c % 2 == 0) {
                 $unique .= $this->letters[(time() * rand(0, 4)) % 48];
-            }
-            else
-            {
+            } else {
                 $unique .= $this->generateBin();
             }
         }
@@ -38,12 +35,11 @@ class UniqueID
     /**
      * GERANDO UNIQUE NECESSÁRIO PARA GERAR O TOKEN (UNIQUE)
      * @return string
-    */
-    private function generateUniqueNumeric()
+     */
+    private function generateUniqueNumeric(): string
     {
         $unique = '';
-        for ($c = 0 ; $c < 4; $c++)
-        {
+        for ($c = 0; $c < 4; $c++) {
             $unique .= $this->generateBin();
         }
         return $unique;
@@ -54,17 +50,16 @@ class UniqueID
      * @param $separate string
      * @return string;
      * */
-    private function generateUnique4WithDateAlphaNumeric($separate)
+    private function generateUnique4WithDateAlphaNumeric(string $separate): string
     {
         $unique_array = [];
-        for ($d = 0; $d < 2; $d++)
-        {
+        for ($d = 0; $d < 2; $d++) {
             $unique = $this->generateUniqueAlphaNumeric();
-            array_push($unique_array, $unique);
+            $unique_array[] = $unique;
         }
         $year = date('Y');
 
-        return substr( $year, -2) . '-'. implode($separate, $unique_array);
+        return substr($year, -2) . '-' . implode($separate, $unique_array);
     }
 
     /**
@@ -72,13 +67,12 @@ class UniqueID
      * @param $separate string
      * @return string;
      * */
-    private function generateUnique16AlphaNumeric($separate)
+    private function generateUnique16AlphaNumeric(string $separate): string
     {
         $unique_array = [];
-        for ($d = 0; $d < 4; $d++)
-        {
+        for ($d = 0; $d < 4; $d++) {
             $unique = $this->generateUniqueAlphaNumeric();
-            array_push($unique_array, $unique);
+            $unique_array[] = $unique;
         }
 
         return implode($separate, $unique_array);
@@ -89,13 +83,12 @@ class UniqueID
      * @param $separate string
      * @return string;
      * */
-    private function generateUnique32AlphaNumeric($separate)
+    private function generateUnique32AlphaNumeric(string $separate): string
     {
         $unique_array = [];
-        for ($d = 0; $d < 8; $d++)
-        {
+        for ($d = 0; $d < 8; $d++) {
             $unique = $this->generateUniqueAlphaNumeric();
-            array_push($unique_array, $unique);
+            $unique_array[] = $unique;
         }
 
         return implode($separate, $unique_array);
@@ -106,13 +99,12 @@ class UniqueID
      * @param $separate string
      * @return string;
      * */
-    private function generateUnique4Numeric($separate)
+    private function generateUnique4Numeric(string $separate): string
     {
         $unique_array = [];
-        for ($d = 0; $d < 1; $d++)
-        {
+        for ($d = 0; $d < 1; $d++) {
             $unique = $this->generateUniqueNumeric();
-            array_push($unique_array, $unique);
+            $unique_array[] = $unique;
         }
 
         return implode($separate, $unique_array);
@@ -123,13 +115,12 @@ class UniqueID
      * @param $separate string
      * @return string;
      * */
-    private function generateUnique8Numeric($separate)
+    private function generateUnique8Numeric(string $separate): string
     {
         $unique_array = [];
-        for ($d = 0; $d < 2; $d++)
-        {
+        for ($d = 0; $d < 2; $d++) {
             $unique = $this->generateUniqueNumeric();
-            array_push($unique_array, $unique);
+            $unique_array[] = $unique;
         }
 
         return implode($separate, $unique_array);
@@ -140,13 +131,12 @@ class UniqueID
      * @param $separate string
      * @return string;
      * */
-    private function generateUnique16Numeric($separate)
+    private function generateUnique16Numeric(string $separate): string
     {
         $unique_array = [];
-        for ($d = 0; $d < 4; $d++)
-        {
+        for ($d = 0; $d < 4; $d++) {
             $unique = $this->generateUniqueNumeric();
-            array_push($unique_array, $unique);
+            $unique_array[] = $unique;
         }
 
         return implode($separate, $unique_array);
@@ -157,13 +147,12 @@ class UniqueID
      * @param $separate string
      * @return string;
      * */
-    private function generateUnique32Numeric($separate)
+    private function generateUnique32Numeric(string $separate): string
     {
         $unique_array = [];
-        for ($d = 0; $d < 8; $d++)
-        {
+        for ($d = 0; $d < 8; $d++) {
             $unique = $this->generateUniqueNumeric();
-            array_push($unique_array, $unique);
+            $unique_array[] = $unique;
         }
 
         return implode($separate, $unique_array);
@@ -171,38 +160,47 @@ class UniqueID
 
     /**
      * GERANDO UM VALOR ALEÁTORIO APARTIR DE BINÁRIO
-    */
-    private function generateBin()
+     */
+    private function generateBin(): float|int
     {
         $key = '';
-        foreach (array_rand($this->numbers, 4) as $val)
-        {
+        foreach (array_rand($this->numbers, 4) as $val) {
             $key .= $val % 2;
         }
-        if (bindec($key) > 9)
-        {
+        if (bindec($key) > 9) {
             return bindec($key) % 5;
-        }
-        elseif (bindec($key) == 0)
-        {
+        } elseif (bindec($key) == 0) {
             $key = '';
-            foreach (array_rand($this->numbers, 4) as $val)
-            {
+            foreach (array_rand($this->numbers, 4) as $val) {
                 $key .= $val % 2;
             }
             return bindec($key);
-        }
-        else
+        } else
             return bindec($key);
     }
 
+
+    public function uniqueId4Numeric($separate = ''): string
+    {
+        return $this->generateUnique4Numeric($separate);
+    }
+
+    public function uniqueId8Numeric($separate = ''): string
+    {
+        return $this->generateUnique8Numeric($separate);
+    }
+
+    public function uniqueId16Numeric($separate = ''): string
+    {
+        return $this->generateUnique16Numeric($separate);
+    }
 
     /**
      * GERANDO UNIQUE ID COM 16 CARACTERES
      * @param $separate string
      * @return string;
      * */
-    public function uniqueId16AlphaNumeric($separate = '')
+    public function uniqueId16AlphaNumeric(string $separate = ''): string
     {
         return $this->generateUnique16AlphaNumeric($separate);
     }
@@ -212,24 +210,9 @@ class UniqueID
      * @param $separate string
      * @return string;
      * */
-    public function uniqueId32AlphaNumeric($separate = '')
+    public function uniqueId32AlphaNumeric(string $separate = ''): string
     {
         return $this->generateUnique32AlphaNumeric($separate);
-    }
-
-    public function uniqueId4Numeric($separate = '')
-    {
-        return $this->generateUnique4Numeric($separate);
-    }
-
-    public function uniqueId8Numeric($separate = '')
-    {
-        return $this->generateUnique8Numeric($separate);
-    }
-
-    public function uniqueId16Numeric($separate = '')
-    {
-        return $this->generateUnique16Numeric($separate);
     }
 
     /**
@@ -237,10 +220,8 @@ class UniqueID
      * @param $separate string
      * @return string;
      * */
-    public function uniqueId32Numeric($separate = '')
+    public function uniqueId32Numeric(string $separate = ''): string
     {
         return $this->generateUnique32Numeric($separate);
     }
 }
-
-
