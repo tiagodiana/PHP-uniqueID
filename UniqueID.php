@@ -196,6 +196,7 @@ class UniqueID
             return bindec($key);
     }
 
+
     /**
      * GERANDO UNIQUE ID COM 16 CARACTERES
      * @param $separate string
@@ -241,3 +242,5 @@ class UniqueID
         return $this->generateUnique32Numeric($separate);
     }
 }
+
+
